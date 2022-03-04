@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# boot count test 
+#
+
+BFILE=/opt/bootcount
+
+count() {
+      if [ -e $BFILE ]; then
+            VALUE=`cat $BFILE`
+      fi
+      VALUE=$((VALUE+1))
+      echo $VALUE > $BFILE
+      sync
+	  echo "@@@@boot count is $VALUE"
+	  ETH0_ST=`cat /sys/class/net/eth0/carrier`
+	  echo "eth0 status is $ETH0_ST"
+	  if [ $ETH0_ST -eq 0 ]; then
+		sleep 2
+		reboot
+	  fi
+}
+
+case "$1" in
+    start)
+	count
+	;;
+    stop)
+	;;
+    restart|reload)
+	count
+	;;
+	*)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
