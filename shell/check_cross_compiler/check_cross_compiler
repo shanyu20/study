@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CROSS_PATH=`which arm-none-linux-gnueabi-gcc`
+
+if [ -z "$CROSS_PATH" ]; then
+	echo "Cross compiler dont't exist, exit"
+else
+	echo "Cross compiler: $CROSS_PATH"
+fi
